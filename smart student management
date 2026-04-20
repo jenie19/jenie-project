@@ -1,0 +1,84 @@
+class Student {
+    int id, marks;
+    String name;
+    Student next;
+
+    Student(int id, String name, int marks) {
+        this.id = id;
+        this.name = name;
+        this.marks = marks;
+    }
+}
+
+public class Main {
+    static Student head = null;
+
+    // Insert
+    static void insert(int id, String name, int marks) {
+        Student n = new Student(id, name, marks);
+        if (head == null) head = n;
+        else {
+            Student t = head;
+            while (t.next != null) t = t.next;
+            t.next = n;
+        }
+    }
+
+    // Delete
+    static void delete(int id) {
+        if (head == null) return;
+        if (head.id == id) head = head.next;
+        else {
+            Student t = head;
+            while (t.next != null && t.next.id != id) t = t.next;
+            if (t.next != null) t.next = t.next.next;
+        }
+    }
+
+    // Search
+    static void search(int id) {
+        Student t = head;
+        while (t != null) {
+            if (t.id == id) {
+                System.out.println(t.id + " " + t.name + " " + t.marks);
+                return;
+            }
+            t = t.next;
+        }
+        System.out.println("Not found");
+    }
+
+    // Sort by marks
+    static void sort() {
+        for (Student i = head; i != null; i = i.next) {
+            for (Student j = i.next; j != null; j = j.next) {
+                if (i.marks > j.marks) {
+                    int m = i.marks; i.marks = j.marks; j.marks = m;
+                    int id = i.id; i.id = j.id; j.id = id;
+                    String n = i.name; i.name = j.name; j.name = n;
+                }
+            }
+        }
+    }
+
+    // Display
+    static void display() {
+        for (Student t = head; t != null; t = t.next)
+            System.out.println(t.id + " " + t.name + " " + t.marks);
+    }
+
+    public static void main(String[] args) {
+        insert(1, "A", 80);
+        insert(2, "B", 60);
+        insert(3, "C", 90);
+
+        sort();
+        display();
+
+        search(2);
+        delete(2);
+
+        System.out.println("After delete:");
+        display();
+    }
+}
