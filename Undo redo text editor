@@ -1,0 +1,69 @@
+import java.util.Stack;
+
+public class TextEditor {
+    private String currentText;
+    private Stack<String> undoStack;
+    private Stack<String> redoStack;
+
+    public TextEditor() {
+        currentText = "";
+        undoStack = new Stack<>();
+        redoStack = new Stack<>();
+    }
+
+    
+    public void type(String text) {
+        undoStack.push(currentText);  
+        currentText += text;
+        redoStack.clear();            
+    }
+
+    
+    public void undo() {
+        if (!undoStack.isEmpty()) {
+            redoStack.push(currentText);
+            currentText = undoStack.pop();
+        } else {
+            System.out.println("Nothing to undo");
+        }
+    }
+
+    
+    public void redo() {
+        if (!redoStack.isEmpty()) {
+            undoStack.push(currentText);
+            currentText = redoStack.pop();
+        } else {
+            System.out.println("Nothing to redo");
+        }
+    }
+
+    
+    public void show() {
+        System.out.println("Current Text: " + currentText);
+    }
+
+    
+    public static void main(String[] args) {
+        TextEditor editor = new TextEditor();
+
+        editor.type("Hello");
+        editor.show();
+
+        editor.type(" World");
+        editor.show();
+
+        editor.undo();
+        editor.show();
+
+        editor.redo();
+        editor.show();
+
+        editor.undo();
+        editor.undo();
+        editor.show();
+
+        editor.redo();
+        editor.show();
+    }
+}
