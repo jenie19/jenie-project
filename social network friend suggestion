@@ -1,0 +1,85 @@
+class Node {
+    String name;
+    Node next;
+
+    Node(String name) {
+        this.name = name;
+        this.next = null;
+    }
+}
+
+class FriendList {
+    Node head = null;
+
+    // Add friend
+    void add(String name) {
+        Node n = new Node(name);
+        if (head == null) head = n;
+        else {
+            Node t = head;
+            while (t.next != null) t = t.next;
+            t.next = n;
+        }
+    }
+
+    // Check if friend exists
+    boolean contains(String name) {
+        Node t = head;
+        while (t != null) {
+            if (t.name.equals(name)) return true;
+            t = t.next;
+        }
+        return false;
+    }
+
+    // Display
+    void display() {
+        Node t = head;
+        while (t != null) {
+            System.out.print(t.name + " ");
+            t = t.next;
+        }
+        System.out.println();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        // User A friends
+        FriendList A = new FriendList();
+        A.add("B");
+        A.add("C");
+
+        // B friends
+        FriendList B = new FriendList();
+        B.add("A");
+        B.add("D");
+
+        // C friends
+        FriendList C = new FriendList();
+        C.add("A");
+        C.add("E");
+
+        System.out.print("A's Friends: ");
+        A.display();
+
+        System.out.print("Suggested Friends for A: ");
+
+        // Suggest from B's friends
+        Node t = B.head;
+        while (t != null) {
+            if (!A.contains(t.name) && !t.name.equals("A"))
+                System.out.print(t.name + " ");
+            t = t.next;
+        }
+
+        // Suggest from C's friends
+        t = C.head;
+        while (t != null) {
+            if (!A.contains(t.name) && !t.name.equals("A"))
+                System.out.print(t.name + " ");
+            t = t.next;
+        }
+    }
+}
